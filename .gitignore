@@ -1,0 +1,4 @@
+input.conf
+mpv.conf
+scripts/autocrop.lua
+scripts/autoload.lua
