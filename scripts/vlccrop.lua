@@ -116,7 +116,6 @@ end
 
 function cleanup() 
     mp.msg.verbose("Cleanup")
-    crop_option = 0 -- Reset crop option
 
     -- This looks for applied filters that match the filter that we are using, then removes them
     local filters = mp.get_property_native("vf")
@@ -133,5 +132,10 @@ function cleanup()
     return false
 end
 
+function on_start()
+    cleanup()
+    crop_option = 0 -- Reset crop option
+end
+
 mp.add_key_binding("c", "toggle_crop", on_press)
-mp.register_event("file-loaded", cleanup)
+mp.register_event("file-loaded", on_start)
