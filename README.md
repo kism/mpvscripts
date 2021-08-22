@@ -13,7 +13,9 @@ More scripts may come in the future.
 Where to put mpv lua scripts, create the folders if the don't exist:
 
 \*nix:
+
 `~/.config/mpv/scripts`
 
 Windows:
+
 `%appdata%\mpv\scripts`
