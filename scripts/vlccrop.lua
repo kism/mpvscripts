@@ -114,8 +114,11 @@ function on_press()
                             command_prefix, cropstring, new_w, new_h, new_x, new_y))
 end
 
-function cleanup() -- This looks for applied filters that match the filter that we are using, then removes them
+function cleanup() 
     mp.msg.verbose("Cleanup")
+    crop_option = 0 -- Reset crop option
+
+    -- This looks for applied filters that match the filter that we are using, then removes them
     local filters = mp.get_property_native("vf")
     for index, filter in pairs(filters) do
         mp.msg.verbose("Applied Crop : " .. tostring(filter["label"]))

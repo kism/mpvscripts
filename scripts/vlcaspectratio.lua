@@ -69,6 +69,7 @@ end
 
 function cleanup()
     mp.msg.verbose("Cleanup")
+    ar_option = 0
     mp.set_property("video-aspect-override", -1)
     return true
 end
