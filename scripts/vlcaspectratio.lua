@@ -62,7 +62,7 @@ function on_press()
         ar_text = tostring(ar)
     end
 
-    mp.msg.verbose("Aspect Ratio: " .. ar_text)
+    mp.msg.info("Aspect Ratio: " .. ar_text)
     mp.osd_message("Aspect Ratio: " .. ar_text)
     mp.set_property("video-aspect-override", ar)
 end
