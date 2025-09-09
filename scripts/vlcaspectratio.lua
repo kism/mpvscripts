@@ -5,64 +5,72 @@
 require "mp.msg"
 require "mp.options"
 
-local stretchnumber = 0
+local ar_option = 0
+
+function has_video()
+    for _, track in pairs(mp.get_property_native('track-list')) do
+        if track.type == 'video' and track.selected then
+            return not track.albumart
+        end
+    end
+
+    return false
+end
 
 function on_press()
+    -- If there is no video to stretch the AR of
+    if not has_video() then
+        mp.msg.warn("autocrop only works for videos.")
+        return
+    end    
+    
     local ar
-    local artext
+    local ar_text
 
-    stretchnumber = stretchnumber + 1
+    ar_option = ar_option + 1
 
-    if stretchnumber == 1 then
+    if ar_option == 1 then
         ar = "16:9"
-    elseif stretchnumber == 2 then
+    elseif ar_option == 2 then
         ar = "4:3"
-    elseif stretchnumber == 3 then
+    elseif ar_option == 3 then
         ar = "1:1"
-    elseif stretchnumber == 4 then
+    elseif ar_option == 4 then
         ar = "16:10"
-    elseif stretchnumber == 5 then
+    elseif ar_option == 5 then
         ar = "2.21:1"
-    elseif stretchnumber == 6 then
+    elseif ar_option == 6 then
         ar = "2.35:1"
-    elseif stretchnumber == 7 then
+    elseif ar_option == 7 then
         ar = "2.39:1"
-    elseif stretchnumber == 8 then
+    elseif ar_option == 8 then
         ar = "5:4"
-    elseif stretchnumber == 9 then
+    elseif ar_option == 9 then
         ar = 0
-    elseif stretchnumber == 10 then
+    elseif ar_option == 10 then
         ar = -1
-        stretchnumber = 0
+        ar_option = 0
     end
 
     if type(ar) == "number" then
         if ar == 0 then
-            artext = "Force PAR 1:1"
-            mp.set_property("video-aspect-override", "no")
-            mp.set_property("video-aspect-mode", "ignore")
+            ar_text = "Force PAR 1:1"
         elseif ar == -1 then
-            artext = "Default"
-            mp.set_property("video-aspect-override", "no")
-            mp.set_property("video-aspect-mode", "container")
-        else
-            artext = "Unknown"
-            mp.set_property("video-aspect-override", "no")
-            mp.set_property("video-aspect-mode", "container")
+            ar_text = "Default"
         end
     else
-        artext = tostring(ar)
-        mp.set_property("video-aspect-override", ar)
-        mp.set_property("video-aspect-mode", "container")
+        ar_text = tostring(ar)
     end
 
-    mp.osd_message("Aspect Ratio: " .. artext)
-
+    mp.msg.info("Aspect Ratio: " .. ar_text)
+    mp.osd_message("Aspect Ratio: " .. ar_text)
+    mp.set_property("video-aspect-override", ar)
 end
 
 function cleanup()
-    mp.set_property("video-aspect-override", "no")
-    mp.set_property("video-aspect-mode", "container")
+    mp.msg.verbose("Cleanup")
+    ar_option = 0
+    mp.set_property("video-aspect-override", -1)
     return true
 end
 
