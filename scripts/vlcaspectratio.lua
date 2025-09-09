@@ -22,10 +22,10 @@ function on_press()
     if not has_video() then
         mp.msg.warn("autocrop only works for videos.")
         return
-    end    
-    
+    end
+
     local ar
-    local ar_text
+    local artext
 
     ar_option = ar_option + 1
 
@@ -47,30 +47,40 @@ function on_press()
         ar = "5:4"
     elseif ar_option == 9 then
         ar = 0
-    elseif ar_option == 10 then
+    elseif ar_option == 10 then -- default, wraps around
         ar = -1
         ar_option = 0
     end
 
     if type(ar) == "number" then
         if ar == 0 then
-            ar_text = "Force PAR 1:1"
+            artext = "Force PAR 1:1"
+            mp.set_property("video-aspect-override", "no")
+            mp.set_property("video-aspect-mode", "ignore")
         elseif ar == -1 then
-            ar_text = "Default"
+            artext = "Default"
+            mp.set_property("video-aspect-override", "no")
+            mp.set_property("video-aspect-mode", "container")
+        else
+            artext = "Unknown"
+            mp.set_property("video-aspect-override", "no")
+            mp.set_property("video-aspect-mode", "container")
         end
     else
-        ar_text = tostring(ar)
+        artext = tostring(ar)
+        mp.set_property("video-aspect-override", ar)
+        mp.set_property("video-aspect-mode", "container")
     end
 
-    mp.msg.info("Aspect Ratio: " .. ar_text)
-    mp.osd_message("Aspect Ratio: " .. ar_text)
-    mp.set_property("video-aspect-override", ar)
+    mp.msg.info("Aspect Ratio: " .. artext)
+    mp.osd_message("Aspect Ratio: " .. artext)
+
 end
 
 function cleanup()
-    mp.msg.verbose("Cleanup")
     ar_option = 0
-    mp.set_property("video-aspect-override", -1)
+    mp.set_property("video-aspect-override", "no")
+    mp.set_property("video-aspect-mode", "container")
     return true
 end
 
