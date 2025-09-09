@@ -25,7 +25,7 @@ function on_press()
     end
 
     local ar
-    local artext
+    local ar_text
 
     ar_option = ar_option + 1
 
@@ -54,26 +54,26 @@ function on_press()
 
     if type(ar) == "number" then
         if ar == 0 then
-            artext = "Force PAR 1:1"
+            ar_text = "Force PAR 1:1"
             mp.set_property("video-aspect-override", "no")
             mp.set_property("video-aspect-mode", "ignore")
         elseif ar == -1 then
-            artext = "Default"
+            ar_text = "Default"
             mp.set_property("video-aspect-override", "no")
             mp.set_property("video-aspect-mode", "container")
         else
-            artext = "Unknown"
+            ar_text = "Unknown"
             mp.set_property("video-aspect-override", "no")
             mp.set_property("video-aspect-mode", "container")
         end
     else
-        artext = tostring(ar)
+        ar_text = tostring(ar)
         mp.set_property("video-aspect-override", ar)
         mp.set_property("video-aspect-mode", "container")
     end
 
-    mp.msg.info("Aspect Ratio: " .. artext)
-    mp.osd_message("Aspect Ratio: " .. artext)
+    mp.msg.info("Aspect Ratio: " .. ar_text)
+    mp.osd_message("Aspect Ratio: " .. ar_text)
 
 end
 
